@@ -11,7 +11,6 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="json" />
           <element id="library" level="project" name="jsoup" />
-          <element id="library" level="project" name="cat.inspiracio.rhino.js.engine" />
         </element>
       </element>
     </root>
