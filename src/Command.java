@@ -75,7 +75,7 @@ public class Command {
             return;
         }
         if(mute_status.equals("creator") || mute_status.equals("administrator")){
-            ac.SendMessage(chat_id, "뮤트할 수 없습니다.");
+            ac.SendMessage(chat_id, "관리자 권한 이상의 등급을 가진 유저는 뮤트가 불가능합니다.");
             return;
         }
 
