@@ -62,7 +62,7 @@ public class Command {
         }
     }
 
-    void mute() throws Exception{
+    void mute(String name) throws Exception{
         Long usage_id = jObject.getJSONObject("message").getJSONObject("from").getLong("id");
         Long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
         Long mute_id = jObject.getJSONObject("message").getJSONArray("entities").getJSONObject(1).getJSONObject("user").getLong("id");
@@ -79,8 +79,24 @@ public class Command {
             return;
         }
 
-        ac.ChatPermissions(chat_id, mute_id, false, false, false, false, false, false, true,true);
+        ac.ChatPermissions(chat_id, mute_id, false, false, false, false, false, false, true,false);
 
+        ac.SendMessage(chat_id, new Unicodekor().uniToKor(name) + "님을 뮤트하였습니다.");
     }
 
+    void unmute(String name) throws Exception {
+        Long usage_id = jObject.getJSONObject("message").getJSONObject("from").getLong("id");
+        Long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
+        Long mute_id = jObject.getJSONObject("message").getJSONArray("entities").getJSONObject(1).getJSONObject("user").getLong("id");
+        Action ac = new Action();
+
+        String status = ac.getChatMember(chat_id, usage_id).getJSONObject("result").getString("status");
+        if(!(status.equals("creator") || status.equals("administrator"))){
+            ac.SendMessage(chat_id, "관리자 이상의 등급만 사용할 수 있습니다.");
+            return;
+        }
+
+        ac.ChatPermissions(chat_id, mute_id, true, true, true, true, true, false, true, false);
+        ac.SendMessage(chat_id, new Unicodekor().uniToKor(name) + "님을 뮤트 해제하였습니다.");
+    }
 }

@@ -40,7 +40,9 @@ public class Telegram extends HttpServlet {
                     cmd.sendHitomi(message.split(" ")[1]);
 
                 if(command.equals("/mute"))
-                    cmd.mute();
+                    cmd.mute(message.split(" ")[1]);
+                if(command.equals("/unmute"))
+                    cmd.unmute(message.split(" ")[1]);
             }
 
             System.out.println();
