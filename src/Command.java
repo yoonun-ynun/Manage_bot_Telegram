@@ -96,7 +96,7 @@ public class Command {
             return;
         }
 
-        ac.ChatPermissions(chat_id, mute_id, true, true, true, true, true, false, true, false);
+        ac.ChatPermissions(chat_id, mute_id, true, true, true, true, true, true, true, true);
         ac.SendMessage(chat_id, new Unicodekor().uniToKor(name) + "님을 뮤트 해제하였습니다.");
     }
 }
