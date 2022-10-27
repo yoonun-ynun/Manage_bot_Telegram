@@ -4,9 +4,7 @@
     <root id="archive" name="ROOT.war">
       <element id="artifact" artifact-name="untitled4:war exploded" />
       <element id="directory" name="WEB-INF">
-        <element id="directory" name="lib">
-          <element id="library" level="project" name="asynchttpclient.async.http.client" />
-        </element>
+        <element id="directory" name="lib" />
       </element>
     </root>
   </artifact>

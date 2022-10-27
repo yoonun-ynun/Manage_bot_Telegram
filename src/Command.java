@@ -27,6 +27,7 @@ public class Command {
             get.getimage(number);
 
             action.SendMessage(chat_id, address);
+            action.SendPhoto(chat_id, "https://your_web_page/hitomi.webp");
         }catch(Exception e){
             e.printStackTrace();
         }

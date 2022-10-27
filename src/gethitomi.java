@@ -1,46 +1,34 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class gethitomi {
     void getimage(String key) throws Exception{
-        String URL = "https://hitomi.la/reader/" + key + ".html#1";
+        String URL = "https://hitomi.la/galleries/" + key + ".html";
 
-        Path path = Paths.get("/Users/yoonun/chromedriver");
-        System.setProperty("webdriver.chrome.driver", path.toString());
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.setHeadless(true);
-        options.addArguments("--disable-gpu");
-        options.addArguments("--disable-popup-blocking");
-        options.addArguments("--disable-default-apps");
+        URL url = new URL("https://ltn.hitomi.la/galleries/" + key + ".js");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while((line = br.readLine()) != null){
+            sb.append(line);
+        }
+        JSONObject info = new JSONObject(sb.toString().substring(18));
 
-        WebDriver driver = new ChromeDriver();
+        String hash = info.getJSONArray("files").getJSONObject(0).getString("hash");
+        String postfix = hash.substring(hash.length()-3);
 
-        driver.get(URL);
+        url = new URL("https://btn.hitomi.la/webpbigtn/" + postfix.charAt(2) + "/" + postfix.charAt(0) + postfix.charAt(1) +"/" + hash + ".webp");
+        con = (HttpURLConnection) url.openConnection();
 
-        Thread.sleep(1000);
+        con.setRequestProperty("Referer", URL);
+        con.setRequestMethod("GET");
 
-        String image = driver.findElement(By.xpath("/html/body/div[3]/picture/img")).getAttribute("src");
-        driver.close();
-
-
-        java.net.URL url = new URL(image);
-        HttpURLConnection in = (HttpURLConnection) url.openConnection();
-        in.setRequestProperty("Referer", URL);
-        in.setRequestMethod("GET");
-
-        InputStream is = in.getInputStream();
-        FileOutputStream outputStream = new FileOutputStream(new File("./web/WEB-INF","image.webp"));
+        InputStream is = con.getInputStream();
+        FileOutputStream outputStream = new FileOutputStream(new File("/root/server/apache-tomcat-9.0.68/webapps/ROOT","hitomi.webp"));
 
         final int BUFFER_SIZE = 4096;
         int bytesRead;
