@@ -2,7 +2,6 @@
 
 JAVA 초짜가 만든 텔레그램 봇입니다.
 
-This bot exist for manage chatroom
 이 봇은 그룹방을 관리해 줍니다.
 
 /hitomi = 품번을 url로 전환합니다. 이미지는 이헨에서 가져옵니다. <br>
