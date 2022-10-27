@@ -22,5 +22,11 @@
     <orderEntry type="library" name="javax.servlet.api" level="project" />
     <orderEntry type="library" name="json" level="project" />
     <orderEntry type="library" name="jsoup" level="project" />
+    <orderEntry type="library" name="selenium-java-4.5" level="project" />
+    <orderEntry type="library" name="guava-31.1-jre" level="project" />
+    <orderEntry type="library" name="dev.failsafe" level="project" />
+    <orderEntry type="library" name="commons-exec-1" level="project" />
+    <orderEntry type="library" name="asynchttpclient.async.http.client" level="project" />
+    <orderEntry type="library" name="io.netty.all" level="project" />
   </component>
 </module>

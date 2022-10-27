@@ -11,6 +11,12 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="json" />
           <element id="library" level="project" name="jsoup" />
+          <element id="library" level="project" name="guava-31.1-jre" />
+          <element id="library" level="project" name="dev.failsafe" />
+          <element id="library" level="project" name="commons-exec-1" />
+          <element id="library" level="project" name="asynchttpclient.async.http.client" />
+          <element id="library" level="project" name="selenium-java-4.5" />
+          <element id="library" level="project" name="io.netty.all" />
         </element>
       </element>
     </root>

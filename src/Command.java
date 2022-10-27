@@ -23,42 +23,10 @@ public class Command {
             String address = "https://hitomi.la/reader/" + number + ".html";
             System.out.println(address);
 
-            URL url = new URL("https://koromo.xyz/api/search/ehash?id=" + number);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            gethitomi get = new gethitomi();
+            get.getimage(number);
 
-            JSONObject ex = new JSONObject(new BufferedReader(new InputStreamReader(con.getInputStream())).readLine());
-            try {
-                String token = ex.getString("result");
-
-
-            url = new URL("https://api.e-hentai.org/api.php");
-            con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Content-Type", "application/json;utf-8");
-            con.setRequestProperty("Accept", "application/json;utf-8");
-            con.setDoOutput(true);
-
-            String jsonInput = "{\"method\": \"gdata\",\"gidlist\": [[" + number + ",\"" + token + "\"]],\"namespace\": 1}";
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(con.getOutputStream()));
-            bw.write(jsonInput);
-            bw.flush();
-            bw.close();
-
-            StringBuilder sb = new StringBuilder();
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String list;
-            while ((list = br.readLine()) != null){
-                sb.append(list).append('\n');
-            }
-
-            JSONObject ex_hentai = new JSONObject(sb.toString());
-            String image_url = ex_hentai.getJSONArray("gmetadata").getJSONObject(0).getString("thumb");
             action.SendMessage(chat_id, address);
-            action.SendPhoto(chat_id, image_url);
-            }catch(JSONException e){
-                action.SendMessage(chat_id, address);
-                action.SendMessage(chat_id, "이미지를 불러올 수 없습니다.");
-            }
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="dev.failsafe" type="repository">
+    <properties maven-id="dev.failsafe:failsafe:3.3.0" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/failsafe-3.3.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

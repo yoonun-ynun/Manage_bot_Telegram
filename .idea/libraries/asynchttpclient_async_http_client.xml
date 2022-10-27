@@ -1,0 +1,27 @@
+<component name="libraryTable">
+  <library name="asynchttpclient.async.http.client" type="repository">
+    <properties maven-id="org.asynchttpclient:async-http-client:2.12.2" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/async-http-client-2.12.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/async-http-client-netty-utils-2.12.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/netty-buffer-4.1.53.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/netty-codec-http-4.1.53.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/netty-common-4.1.53.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/netty-transport-4.1.53.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/netty-codec-4.1.53.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/netty-handler-4.1.53.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/netty-resolver-4.1.53.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/netty-codec-socks-4.1.53.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/netty-handler-proxy-4.1.53.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/netty-transport-native-epoll-4.1.53.Final-linux-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/netty-transport-native-unix-common-4.1.53.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/netty-transport-native-kqueue-4.1.53.Final-osx-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/reactive-streams-1.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/netty-reactive-streams-2.0.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.30.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jakarta.activation-1.2.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
