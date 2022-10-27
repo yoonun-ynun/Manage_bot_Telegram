@@ -7,6 +7,8 @@ public class Chatinfo {
         return id;
     }
     void saveUserid (String name, long id){
+        if(userid.get(name) != null)
+            return;
         userid.put(name, id);
     }
 }
