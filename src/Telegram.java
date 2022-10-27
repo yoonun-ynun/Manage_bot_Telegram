@@ -19,6 +19,7 @@ public class Telegram extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
+
             StringBuilder sb = new StringBuilder();
 
             String line;
@@ -28,13 +29,15 @@ public class Telegram extends HttpServlet {
             }
             System.out.println(sb);
             JSONObject jObject = new JSONObject(sb.toString());
+            Command cmd = new Command(jObject);
+            JSONObject userdata = jObject.getJSONObject("message").getJSONObject("from");
+            cmd.Saveinfo(userdata);
             JSONArray jArray = jObject.getJSONObject("message").getJSONArray("entities");
             JSONObject obj = jArray.getJSONObject(0);
             String type = obj.getString("type");
             String message = jObject.getJSONObject("message").getString("text");
 
             if (type.equals("bot_command")) {
-                Command cmd = new Command(jObject);
                 String command = message.split(" ")[0];
                 if(command.equals("/hitomi"))
                     cmd.sendHitomi(message.split(" ")[1]);
@@ -43,6 +46,10 @@ public class Telegram extends HttpServlet {
                     cmd.mute(message.split(" ")[1]);
                 if(command.equals("/unmute"))
                     cmd.unmute(message.split(" ")[1]);
+                if(command.equals("/getinfo")){
+                    cmd.getChat(message.split(" ")[1]);
+                }
+
             }
 
             System.out.println();

@@ -7,8 +7,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 public class Command {
+    static HashMap<Long, Chatinfo> info = new HashMap<>();
     JSONObject jObject;
     Command(JSONObject jObject){
         this.jObject = jObject;
@@ -63,9 +65,15 @@ public class Command {
     }
 
     void mute(String name) throws Exception{
-        Long usage_id = jObject.getJSONObject("message").getJSONObject("from").getLong("id");
-        Long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
-        Long mute_id = jObject.getJSONObject("message").getJSONArray("entities").getJSONObject(1).getJSONObject("user").getLong("id");
+
+        long usage_id = jObject.getJSONObject("message").getJSONObject("from").getLong("id");
+        long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
+        long mute_id;
+        if(name.charAt(0) == '@'){
+            mute_id = info.get(chat_id).getUserid(name.replaceAll("@", ""));
+        }else {
+            mute_id = jObject.getJSONObject("message").getJSONArray("entities").getJSONObject(1).getJSONObject("user").getLong("id");
+        }
         Action ac = new Action();
 
         String status = ac.getChatMember(chat_id, usage_id).getJSONObject("result").getString("status");
@@ -98,5 +106,23 @@ public class Command {
 
         ac.ChatPermissions(chat_id, mute_id, true, true, true, true, true, true, true, true);
         ac.SendMessage(chat_id, new Unicodekor().uniToKor(name) + "님을 뮤트 해제하였습니다.");
+    }
+
+    void RSP(String input) throws Exception{
+
+    }
+    void getChat(String name) throws Exception{
+        Long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
+        Action ac = new Action();
+        JSONObject object = ac.getChat(name);
+        System.out.println(object.toString());
+    }
+    void Saveinfo(JSONObject data){
+        long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
+        long user_id = data.getLong("id");
+        String user_name = data.getString("username");
+        Chatinfo info = new Chatinfo();
+        info.saveUserid(user_name, user_id);
+        this.info.put(chat_id, info);
     }
 }
