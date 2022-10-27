@@ -93,9 +93,14 @@ public class Command {
     }
 
     void unmute(String name) throws Exception {
-        Long usage_id = jObject.getJSONObject("message").getJSONObject("from").getLong("id");
-        Long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
-        Long mute_id = jObject.getJSONObject("message").getJSONArray("entities").getJSONObject(1).getJSONObject("user").getLong("id");
+        long usage_id = jObject.getJSONObject("message").getJSONObject("from").getLong("id");
+        long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
+        long mute_id;
+        if(name.charAt(0) == '@'){
+            mute_id = info.get(chat_id).getUserid(name.replaceAll("@", ""));
+        }else {
+            mute_id = jObject.getJSONObject("message").getJSONArray("entities").getJSONObject(1).getJSONObject("user").getLong("id");
+        }
         Action ac = new Action();
 
         String status = ac.getChatMember(chat_id, usage_id).getJSONObject("result").getString("status");
