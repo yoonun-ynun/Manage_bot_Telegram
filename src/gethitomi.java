@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class gethitomi {
+    static int count = 0;
     void getimage(String key) throws Exception{
         String URL = "https://hitomi.la/galleries/" + key + ".html";
 
@@ -29,7 +30,7 @@ public class gethitomi {
         con.setRequestMethod("GET");
 
         InputStream is = con.getInputStream();
-        FileOutputStream outputStream = new FileOutputStream(new File("/root/server/apache-tomcat-9.0.68/webapps/ROOT","hitomi.png"));
+        FileOutputStream outputStream = new FileOutputStream(new File("/root/server/apache-tomcat-9.0.68/webapps/ROOT","hitomi" + count + ".png"));
 
         final int BUFFER_SIZE = 4096;
         int bytesRead;
@@ -37,7 +38,7 @@ public class gethitomi {
         while ((bytesRead = is.read(buffer)) != -1){
             outputStream.write(buffer, 0, bytesRead);
         }
-
+        count++;
 
         is.close();
         outputStream.close();
