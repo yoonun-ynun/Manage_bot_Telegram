@@ -1,4 +1,4 @@
-# Telegram_bot
+# Manage_bot
 
 JAVA 초짜가 만든 텔레그램 봇입니다.
 
