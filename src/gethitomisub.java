@@ -7,8 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class gethitomisub {
-    public String code;
-    char check(int id) throws Exception{
+    String check(int id) throws Exception{
         URL url = new URL("https://ltn.hitomi.la/gg.js");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -18,7 +17,7 @@ public class gethitomisub {
             sb.append(line).append('\n');
         }
 
-        code = sb.substring((sb.length()-16), (sb.length())-6);
+        String code = sb.substring((sb.length()-16), (sb.length())-6);
 
         String jscode = sb.substring(24, (sb.length()-115)).replace("function(g) {", "function get(g){");
 
@@ -29,11 +28,12 @@ public class gethitomisub {
 
         Invocable invoc = (Invocable) engine;
         Object object = invoc.invokeFunction("get", id);
-        Integer num = Integer.parseInt(object.toString().substring(2,3));
+        double dnum = (Double)object;
+        int num = (int)dnum;
 
         if(num == 0)
-            return 'a';
+            return "https://aa.hitomi.la/webp/" + code;
         else
-            return 'b';
+            return "https://ba.hitomi.la/webp/" + code;
     }
 }

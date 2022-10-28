@@ -27,9 +27,8 @@ public class gethitomi {
         String postfix = hash.substring(hash.length()-3);
         int secret = Integer.parseInt(String.valueOf(postfix.charAt(2)) + postfix.charAt(0) + postfix.charAt(1), 16);
 
-        gethitomisub getsub =  new gethitomisub();
         //gethitomisub에서 중간에 들어갈 주소가 a 인지 b인지 구함 참고: https://ltn.hitomi.la/gg.js
-        String hitomiurl = "https://" + getsub.check(secret) + "a.hitomi.la/webp/" + getsub.code + "/" + secret +"/" +  hash + ".webp" ;
+        String hitomiurl = new gethitomisub().check(secret) + "/" + secret +"/" +  hash + ".webp" ;
 
         url = new URL(hitomiurl);
         con = (HttpURLConnection) url.openConnection();
@@ -40,7 +39,7 @@ public class gethitomi {
 
         //이미지 저장
         InputStream is = con.getInputStream();
-        FileOutputStream outputStream = new FileOutputStream(new File("your_path","hitomi2" + count + ".png"));
+        FileOutputStream outputStream = new FileOutputStream(new File("your_path","hitomi1" + count + ".png"));
 
         final int BUFFER_SIZE = 4096;
         int bytesRead;

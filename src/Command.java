@@ -1,4 +1,6 @@
 import org.json.JSONObject;
+
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 public class Command {
@@ -9,17 +11,24 @@ public class Command {
     }
     void sendHitomi(String number){
         try {
+
             JSONObject chat = jObject.getJSONObject("message").getJSONObject("chat");
             Long chat_id = chat.getLong("id");
             Action action = new Action();
+
             String address = "https://hitomi.la/reader/" + number + ".html";
             System.out.println(address);
 
-            gethitomi get = new gethitomi();
-            get.getimage(number);
+            try {
+                gethitomi get = new gethitomi();
+                get.getimage(number);
+            }catch (FileNotFoundException e){
+                action.SendMessage(chat_id, "일치하는 번호가 없습니다.");
+                return;
+            }
 
             action.SendMessage(chat_id, address);
-            action.SendPhoto(chat_id, "https://your_web_site/hitomi2" + (gethitomi.count-1) + ".png");
+            action.SendPhoto(chat_id, "https://your_web_site/hitomi1" + (gethitomi.count-1) + ".png");
         }catch(Exception e){
             e.printStackTrace();
         }
