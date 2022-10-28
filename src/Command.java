@@ -19,7 +19,7 @@ public class Command {
             get.getimage(number);
 
             action.SendMessage(chat_id, address);
-            action.SendPhoto(chat_id, "https://your_web_page/hitomi2" + (gethitomi.count-1) + ".png");
+            action.SendPhoto(chat_id, "https://your_web_site/hitomi2" + (gethitomi.count-1) + ".png");
         }catch(Exception e){
             e.printStackTrace();
         }
