@@ -32,8 +32,8 @@ public class gethitomisub {
         Integer num = Integer.parseInt(object.toString().substring(2,3));
 
         if(num == 0)
-            return 'a';
-        else
             return 'b';
+        else
+            return 'a';
     }
 }
