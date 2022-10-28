@@ -25,10 +25,11 @@ public class gethitomi {
 
         //중간에 들어갈 주소 구하기 hash의 마지막 글자 3개를 2 0 1 순으로 배치한 것을 16진수로 취급하고 10진수로 변환
         String postfix = hash.substring(hash.length()-3);
-        int secret = Integer.parseInt(new StringBuilder().append(postfix.charAt(2)).append(postfix.charAt(0)).append(postfix.charAt(1)).toString(), 16);
+        int secret = Integer.parseInt(String.valueOf(postfix.charAt(2)) + postfix.charAt(0) + postfix.charAt(1), 16);
 
+        gethitomisub getsub =  new gethitomisub();
         //gethitomisub에서 중간에 들어갈 주소가 a 인지 b인지 구함 참고: https://ltn.hitomi.la/gg.js
-        String hitomiurl = "https://" + new gethitomisub().check(secret) + "a.hitomi.la/webp/1666922401/" + secret +"/" +  hash + ".webp" ;
+        String hitomiurl = "https://" + getsub.check(secret) + "a.hitomi.la/webp/" + getsub.code + "/" + secret +"/" +  hash + ".webp" ;
 
         url = new URL(hitomiurl);
         con = (HttpURLConnection) url.openConnection();
@@ -39,7 +40,7 @@ public class gethitomi {
 
         //이미지 저장
         InputStream is = con.getInputStream();
-        FileOutputStream outputStream = new FileOutputStream(new File("your_path","hitomi0" + count + ".png"));
+        FileOutputStream outputStream = new FileOutputStream(new File("your_path","hitomi1" + count + ".png"));
 
         final int BUFFER_SIZE = 4096;
         int bytesRead;
