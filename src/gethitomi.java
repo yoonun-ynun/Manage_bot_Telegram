@@ -8,7 +8,7 @@ import java.net.URL;
 public class gethitomi {
     static int count = 0;
     void getimage(String key) throws Exception{
-        String URL = "https://hitomi.la/galleries/" + key + ".html";
+        String URL = "https://hitomi.la/reader/" + key + ".html#1";
 
         URL url = new URL("https://ltn.hitomi.la/galleries/" + key + ".js");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -23,14 +23,18 @@ public class gethitomi {
         String hash = info.getJSONArray("files").getJSONObject(0).getString("hash");
         String postfix = hash.substring(hash.length()-3);
 
-        url = new URL("https://btn.hitomi.la/webpbigtn/" + postfix.charAt(2) + "/" + postfix.charAt(0) + postfix.charAt(1) +"/" + hash + ".webp");
+        int secret = Integer.parseInt(new StringBuilder().append(postfix.charAt(2)).append(postfix.charAt(0)).append(postfix.charAt(1)).toString(), 16);
+
+        String hitomiurl = "https://" + new gethitomisub().check(secret) + "a.hitomi.la/webp/1666922401/" + secret +"/" +  hash + ".webp" ;
+
+        url = new URL(hitomiurl);
         con = (HttpURLConnection) url.openConnection();
 
         con.setRequestProperty("Referer", URL);
         con.setRequestMethod("GET");
 
         InputStream is = con.getInputStream();
-        FileOutputStream outputStream = new FileOutputStream(new File("/root/server/apache-tomcat-9.0.68/webapps/ROOT","hitomi" + count + ".png"));
+        FileOutputStream outputStream = new FileOutputStream(new File("your_path","hitomi0" + count + ".png"));
 
         final int BUFFER_SIZE = 4096;
         int bytesRead;
