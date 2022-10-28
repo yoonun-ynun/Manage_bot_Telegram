@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Action{
-    String Token = "your_token";
+    String Token = new Info().your_token;
     String Address;
     Action(){
         Address = "https://api.telegram.org/bot" + Token + "/";
