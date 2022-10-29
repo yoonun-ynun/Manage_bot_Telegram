@@ -12,6 +12,5 @@
   </head>
   <body>
         This website exists for bot
-  </form>
   </body>
 </html>
