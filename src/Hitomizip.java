@@ -63,10 +63,8 @@ public class Hitomizip implements Runnable{
                     return;
                 }
                 ac.Edittext(chat_id, message_id, count[0] + "/" + length + "개 다운로드 완료");
-                System.out.println(count[0] + "/" + length + "개 다운로드 완료");
                 TIME_count++;
             }
-            System.out.println("end");
 
             ac.Edittext(chat_id, message_id, "파일 압축중..");
             File zipfile = new File(new Info().your_path + "/hitomi/", key + ".zip");
@@ -94,10 +92,9 @@ public class Hitomizip implements Runnable{
             long file_size = (zipfile.length()/1024)/1024;
             if(file_size>=50){
                 ac.SendMessage(chat_id, "https://" + new Info().your_web_site + "/hitomi/" + key + ".zip");
+            }else {
+                ac.SendDocument(chat_id, zipfile);
             }
-
-            ac.SendDocument(chat_id, zipfile);
-            System.out.println("Done");
 
         } catch (Exception e) {
             e.printStackTrace();
