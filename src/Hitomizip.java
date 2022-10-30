@@ -56,7 +56,7 @@ public class Hitomizip implements Runnable{
             }
             service.shutdown();
             int TIME_count = 0;
-            while (!service.awaitTermination(1, TimeUnit.SECONDS)){
+            while (!service.awaitTermination(2, TimeUnit.SECONDS)){
                 if(TIME_count>300){
                     ac.Edittext(chat_id,message_id, "다운로드 실패 cause: 시간초과");
                     service.shutdownNow();
@@ -66,6 +66,7 @@ public class Hitomizip implements Runnable{
                 TIME_count++;
             }
 
+            TimeUnit.SECONDS.sleep(1);
             ac.Edittext(chat_id, message_id, "파일 압축중..");
             File zipfile = new File(new Info().your_path + "/hitomi/", key + ".zip");
             ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipfile));
@@ -87,6 +88,7 @@ public class Hitomizip implements Runnable{
             }
             out.close();
 
+            TimeUnit.SECONDS.sleep(1);
             ac.Edittext(chat_id, message_id, "전송중..");
 
             long file_size = (zipfile.length()/1024)/1024;
