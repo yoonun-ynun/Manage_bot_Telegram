@@ -1,5 +1,6 @@
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 
@@ -28,7 +29,7 @@ public class Command {
             }
 
             action.SendMessage(chat_id, address);
-            action.SendPhoto(chat_id, "https://" + new Info().your_web_site + "/hitomi/hitomi2" + (gethitomi.count-1) + ".png");
+            action.SendPhoto(chat_id, new File(new Info().your_path + "/hitomi/", "hitomi.webp"));
         }catch(Exception e){
             e.printStackTrace();
         }

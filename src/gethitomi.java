@@ -39,7 +39,7 @@ public class gethitomi {
 
         //이미지 저장
         InputStream is = con.getInputStream();
-        FileOutputStream outputStream = new FileOutputStream(new File(new Info().your_path + "/hitomi/","hitomi2" + count + ".png"));
+        FileOutputStream outputStream = new FileOutputStream(new File(new Info().your_path + "/hitomi/","hitomi.webp"));
 
         final int BUFFER_SIZE = 4096;
         int bytesRead;
