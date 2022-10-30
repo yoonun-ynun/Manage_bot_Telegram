@@ -48,10 +48,6 @@ public class Hitomizip implements Runnable{
                                 break;
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                if(retries>10) {
-                                    ac.SendMessage(chat_id, key + "번호의" + num + "번째 이미지 저장에 실패하였습니다.");
-                                    break;
-                                }
                             }
                         }
                     }
@@ -71,11 +67,6 @@ public class Hitomizip implements Runnable{
                 TIME_count++;
             }
             System.out.println("end");
-
-            if(count[0]<length){
-                ac.Edittext(chat_id, message_id,"다운로드 실패 cause: 1장 이상의 이미지 다운로드 실패");
-                return;
-            }
 
             ac.Edittext(chat_id, message_id, "파일 압축중..");
             File zipfile = new File(new Info().your_path + "/hitomi/", key + ".zip");
