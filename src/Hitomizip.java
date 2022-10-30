@@ -47,7 +47,7 @@ public class Hitomizip implements Runnable{
                                 count[0]++;
                                 break;
                             } catch (Exception e) {
-                                e.printStackTrace();
+
                             }
                         }
                     }
@@ -97,6 +97,7 @@ public class Hitomizip implements Runnable{
             }else {
                 ac.SendDocument(chat_id, zipfile);
             }
+            ac.Edittext(chat_id, message_id, "전송 완료");
 
         } catch (Exception e) {
             e.printStackTrace();
