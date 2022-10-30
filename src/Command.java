@@ -2,9 +2,11 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Command {
+    static ArrayList<Thread> download = new ArrayList<>();
     static HashMap<Long, Chatinfo> info = new HashMap<>();
     JSONObject jObject;
     Command(JSONObject jObject){
@@ -12,7 +14,7 @@ public class Command {
     }
     void sendHitomi(String number){
         try {
-
+            File file = new File(new Info().your_path + "/hitomi/", "hitomi.webp");
             JSONObject chat = jObject.getJSONObject("message").getJSONObject("chat");
             Long chat_id = chat.getLong("id");
             Action action = new Action();
@@ -22,17 +24,24 @@ public class Command {
 
             try {
                 gethitomi get = new gethitomi();
-                get.getimage(number);
+                get.getimage(number, 1,file);
             }catch (FileNotFoundException e){
                 action.SendMessage(chat_id, "일치하는 번호가 없습니다.");
                 return;
             }
 
             action.SendMessage(chat_id, address);
-            action.SendPhoto(chat_id, new File(new Info().your_path + "/hitomi/", "hitomi.webp"));
+            action.SendPhoto(chat_id, file);
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    void sendHitomiZip(String number)throws Exception{
+        long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
+        Thread th = new Thread(new Hitomizip(number, chat_id));
+        th.start();
+        download.add(th);
     }
 
     void mute(String name) throws Exception{

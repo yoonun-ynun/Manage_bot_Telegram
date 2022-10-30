@@ -49,6 +49,8 @@ public class Telegram extends HttpServlet {
                 if(command.equals("/getinfo")){
                     cmd.getChat(message.split(" ")[1]);
                 }
+                if(command.equals("/gethitomi"))
+                    cmd.sendHitomiZip(message.split(" ")[1]);
 
             }
 

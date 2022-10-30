@@ -16,7 +16,7 @@ public class Action{
         Address = "https://api.telegram.org/bot" + this.Token + "/";
     }
 
-    void SendMessage(Long id, String text){
+    int SendMessage(Long id, String text){
         try {
             String Address = this.Address + "sendMessage" + "?chat_id=" + id + "&text=" + text;
             URL url = new URL(Address);
@@ -24,10 +24,18 @@ public class Action{
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
             con.setRequestMethod("GET");
 
-            InputStream result = con.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String line;
+            StringBuilder sb = new StringBuilder();
+            while ((line = br.readLine()) != null)
+                sb.append(line).append('\n');
+            JSONObject ob = new JSONObject(sb.toString());
+
+            return ob.getJSONObject("result").getInt("message_id");
         }catch (Exception e){
             e.printStackTrace();
         }
+        return 0;
     }
 
     void SendPhoto(Long id, String image){
@@ -44,62 +52,15 @@ public class Action{
     }
 
     void SendPhoto(Long id, File file) throws Exception{
-        final String two_hyphen = "--";
-        final String end = "\r\n";
-        final String boundary = "yoonun_botjdkfldjsaf";
-
         String Address = this.Address + "sendPhoto";
-        URL url = new URL(Address);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        Multipart multi = new Multipart();
+        multi.start(id, Address, file, "image", "photo");
+    }
 
-        connection.setRequestMethod("POST");
-        connection.setDoInput(true);
-        connection.setDoOutput(true);
-        connection.setRequestProperty("Cache-Control", "no-cache");
-        connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-
-        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-        out.writeBytes(two_hyphen + boundary + end);
-
-        out.writeBytes("Content-Disposition: form-data; name=\"chat_id\"" + end);
-        out.writeBytes(end);
-        out.writeBytes(id.toString());
-        out.writeBytes(end);
-
-        out.writeBytes(two_hyphen + boundary + end);
-        out.writeBytes("Content-Disposition: form-data; name=\"photo\"; filename=\"" + file.getName() + "\"" + end);
-        out.writeBytes("Content-Type: image/" + file.getName().split("\\.")[1] + end);
-        out.writeBytes(end);
-
-        FileInputStream in = new FileInputStream(file);
-        int BUFFER_SIZE = 4096;
-        byte[] buffer = new byte[BUFFER_SIZE];
-        int bytesRead;
-        while ((bytesRead = in.read(buffer)) != -1){
-            out.write(buffer, 0, bytesRead);
-        }
-        out.writeBytes(end);
-        out.writeBytes(two_hyphen + boundary + two_hyphen + end);
-        out.flush();
-        out.close();
-
-        String line;
-        StringBuilder result = new StringBuilder();
-        BufferedReader br;
-
-        int status = connection.getResponseCode();
-        if(status == HttpURLConnection.HTTP_OK){
-            br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            while ((line = br.readLine()) != null)
-                result.append(line).append('\n');
-            System.out.println(result);
-        }else{
-            br = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
-            while((line = br.readLine()) != null)
-                result.append(line).append('\n');
-            System.out.println(result);
-        }
-
+    void SendDocument(long id, File file) throws Exception{
+        String Address = this.Address + "sendDocument";
+        Multipart multi = new Multipart();
+        multi.start(id, Address, file, "document", "document");
     }
 
     void ChatPermissions
@@ -148,5 +109,13 @@ public class Action{
             sb.append(line);
         }
         return new JSONObject(sb.toString());
+    }
+    void Edittext(long chat_id, int message_id, String text) throws Exception{
+        String Address = this.Address + "editMessageText?" + "chat_id=" + chat_id + "&message_id=" + message_id + "&text=" + text;
+        URL url = new URL(Address);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        BufferedReader result = new BufferedReader(new InputStreamReader(con.getInputStream()));
     }
 }

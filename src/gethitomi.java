@@ -6,8 +6,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class gethitomi {
+
     static int count = 0;
-    void getimage(String key) throws Exception{
+    void getimage(String key, int page_number, File file) throws Exception{
         //이미지를 가져올 주소
         String URL = "https://hitomi.la/reader/" + key + ".html#1";
 
@@ -21,7 +22,7 @@ public class gethitomi {
             sb.append(line);
         }
         JSONObject info = new JSONObject(sb.toString().substring(18));
-        String hash = info.getJSONArray("files").getJSONObject(0).getString("hash");
+        String hash = info.getJSONArray("files").getJSONObject(page_number-1).getString("hash");
 
         //중간에 들어갈 주소 구하기 hash의 마지막 글자 3개를 2 0 1 순으로 배치한 것을 16진수로 취급하고 10진수로 변환
         String postfix = hash.substring(hash.length()-3);
@@ -39,7 +40,7 @@ public class gethitomi {
 
         //이미지 저장
         InputStream is = con.getInputStream();
-        FileOutputStream outputStream = new FileOutputStream(new File(new Info().your_path + "/hitomi/","hitomi.webp"));
+        FileOutputStream outputStream = new FileOutputStream(file);
 
         final int BUFFER_SIZE = 4096;
         int bytesRead;
