@@ -1,6 +1,5 @@
 /src/Info.java
-/web/result
+/web/result/ROOT.war
+*.iml
 *.idea
 *.out
-*.result
-*.iml
