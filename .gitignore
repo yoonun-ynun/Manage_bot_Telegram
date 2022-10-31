@@ -1,3 +1,4 @@
 /src/Info.java
 *.iml
 *.idea
+*.out
