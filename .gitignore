@@ -1,5 +1,6 @@
 /src/Info.java
 /web/result
-untitled4.iml
 *.idea
 *.out
+*.result
+*.iml
