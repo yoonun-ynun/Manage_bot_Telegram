@@ -21,12 +21,19 @@ public class Hitomizip implements Runnable{
 
             URL url = new URL("https://ltn.hitomi.la/galleries/" + key + ".js");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            BufferedReader br = null;
+            try {
+                br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            }catch(FileNotFoundException e){
+                ac.SendMessage(chat_id, "일치하는 번호가 없습니다.");
+                return;
+            }
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
+
             JSONObject info = new JSONObject(sb.toString().substring(18));
             int length = info.getJSONArray("files").length();
 

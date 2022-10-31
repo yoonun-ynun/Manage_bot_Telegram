@@ -1,4 +1,5 @@
 /src/Info.java
-*.iml
+/web/result
+untitled4.iml
 *.idea
 *.out
