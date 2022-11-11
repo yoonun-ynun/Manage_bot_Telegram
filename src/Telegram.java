@@ -30,8 +30,6 @@ public class Telegram extends HttpServlet {
             System.out.println(sb);
             JSONObject jObject = new JSONObject(sb.toString());
             Command cmd = new Command(jObject);
-            JSONObject userdata = jObject.getJSONObject("message").getJSONObject("from");
-            cmd.Saveinfo(userdata);
             JSONArray jArray = jObject.getJSONObject("message").getJSONArray("entities");
             JSONObject obj = jArray.getJSONObject(0);
             String type = obj.getString("type");
@@ -51,8 +49,12 @@ public class Telegram extends HttpServlet {
                 }
                 if(command.equals("/gethitomi"))
                     cmd.sendHitomiZip(message.split(" ")[1]);
+                if(command.equals("/banchat"))
+                    cmd.banChat(message.split(" ")[1]);
 
             }
+            JSONObject userdata = jObject.getJSONObject("message").getJSONObject("from");
+            cmd.Saveinfo(userdata);
 
             System.out.println();
         }catch (Exception e){
