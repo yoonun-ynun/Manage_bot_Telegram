@@ -106,8 +106,14 @@ public class Command {
         long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
         long user_id = data.getLong("id");
         String user_name = data.getString("username");
-        Chatinfo info = new Chatinfo();
-        info.saveUserid(user_name, user_id);
-        this.info.put(chat_id, info);
+        if(Command.info.get(chat_id) == null) {
+            Chatinfo info = new Chatinfo();
+            info.saveUserid(user_name, user_id);
+            Command.info.put(chat_id, info);
+        }
+    }
+    void banChat(String text){
+        long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
+
     }
 }
