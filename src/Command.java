@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class Command {
     static ArrayList<Thread> download = new ArrayList<>();
     static HashMap<Long, Chatinfo> info = new HashMap<>();
+    static HashMap<Long, ArrayList<String>> banned = Action.Read_banned();
     JSONObject jObject;
     Command(JSONObject jObject){
         this.jObject = jObject;
@@ -112,8 +113,54 @@ public class Command {
             Command.info.put(chat_id, info);
         }
     }
-    void banChat(String text){
+    void banChat(String text) throws Exception{
         long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
-
+        Action ac = new Action();
+        long usage_id = jObject.getJSONObject("message").getJSONObject("from").getLong("id");
+        String status = ac.getChatMember(chat_id, usage_id).getJSONObject("result").getString("status");
+        if(!(status.equals("creator") || status.equals("administrator"))){
+            ac.SendMessage(chat_id, "관리자 이상의 등급만 사용할 수 있습니다.");
+            return;
+        }
+        if(banned.get(chat_id) == null){
+            ArrayList<String> ban_list = new ArrayList<>();
+            ban_list.add(text);
+            banned.put(chat_id, ban_list);
+        }else{
+            ArrayList<String> ban_list = banned.get(chat_id);
+            banned.remove(chat_id);
+            ban_list.add(text);
+            banned.put(chat_id, ban_list);
+        }
+        Action.Write_banned();
+        ac.SendMessage(chat_id, "성공");
+    }
+    void unbanChat(String text) throws Exception{
+        long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
+        Action ac = new Action();
+        long usage_id = jObject.getJSONObject("message").getJSONObject("from").getLong("id");
+        String status = ac.getChatMember(chat_id, usage_id).getJSONObject("result").getString("status");
+        if(!(status.equals("creator") || status.equals("administrator"))){
+            ac.SendMessage(chat_id, "관리자 이상의 등급만 사용할 수 있습니다.");
+            return;
+        }
+        ArrayList<String> banned_list = banned.get(chat_id);
+        banned_list.remove(text);
+        ac.SendMessage(chat_id, "성공");
+        Action.Write_banned();
+    }
+    void check_banned(String text, long message_id) throws Exception{
+        long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
+        ArrayList<String> ban_list = banned.get(chat_id);
+        Action ac = new Action();
+        try {
+            for (String banned_text : ban_list) {
+                if (text.contains(banned_text)) {
+                    ac.delete_massage(chat_id, message_id);
+                }
+            }
+        }catch (NullPointerException E){
+            return;
+        }
     }
 }

@@ -4,6 +4,10 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 public class Action{
     String Token = new Info().your_token;
@@ -117,5 +121,76 @@ public class Action{
         con.setRequestMethod("GET");
 
         BufferedReader result = new BufferedReader(new InputStreamReader(con.getInputStream()));
+    }
+    void delete_massage(long chat_id, long message_id) throws Exception{
+        String Address = this.Address + "deleteMessage?" + "chat_id=" + chat_id + "&message_id=" + message_id;
+        URL url = new URL(Address);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        InputStream result = con.getInputStream();
+    }
+
+    static void Write_banned(){
+        try {
+            File save = new File(new Info().your_path, "banchat.txt");
+            BufferedWriter bw = null;
+            try {
+                bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(save)));
+            } catch (FileNotFoundException E) {
+                E.printStackTrace();
+                return;
+            }
+            HashMap<Long, ArrayList<String>> banned = Command.banned;
+            for (Map.Entry<Long, ArrayList<String>> entry : banned.entrySet()) {
+                bw.write(Long.toString(entry.getKey()));
+                bw.newLine();
+                for(String text:entry.getValue()){
+                    bw.write(text);
+                    bw.newLine();
+                }
+                bw.newLine();
+            }
+            bw.flush();
+            bw.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    static HashMap<Long, ArrayList<String>> Read_banned(){
+        HashMap<Long, ArrayList<String>> result = new HashMap<>();
+        try {
+            ArrayList<String> banned = new ArrayList<>();
+            File read = new File(new Info().your_path, "banchat.txt");
+            boolean check = false;
+            long id = 0L;
+            BufferedReader br = null;
+            try{
+                br = new BufferedReader(new InputStreamReader(new FileInputStream(read)));
+            }catch (FileNotFoundException e){
+                return result;
+            }
+            String input = "";
+            while((input = br.readLine()) != null){
+                if(!input.equals("")){
+                    if(!check){
+                        id = Long.parseLong(input);
+                        check = true;
+                    }else{
+                        banned.add(input);
+                    }
+                }else{
+                    result.put(id, banned);
+                    banned = new ArrayList<>();
+                    id = 0L;
+                    check = false;
+                }
+            }
+            br.close();
+            return result;
+        }catch (IOException e) {
+            e.printStackTrace();
+            return result;
+        }
     }
 }

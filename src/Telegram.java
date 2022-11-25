@@ -30,10 +30,13 @@ public class Telegram extends HttpServlet {
             System.out.println(sb);
             JSONObject jObject = new JSONObject(sb.toString());
             Command cmd = new Command(jObject);
+            long key = jObject.getJSONObject("message").getLong("message_id");
+            System.out.println(key);
+            String message = jObject.getJSONObject("message").getString("text");
+            cmd.check_banned(message, key);
             JSONArray jArray = jObject.getJSONObject("message").getJSONArray("entities");
             JSONObject obj = jArray.getJSONObject(0);
             String type = obj.getString("type");
-            String message = jObject.getJSONObject("message").getString("text");
 
             if (type.equals("bot_command")) {
                 String command = message.split(" ")[0];
@@ -51,6 +54,8 @@ public class Telegram extends HttpServlet {
                     cmd.sendHitomiZip(message.split(" ")[1]);
                 if(command.equals("/banchat"))
                     cmd.banChat(message.split(" ")[1]);
+                if(command.equals("/unbanchat"))
+                    cmd.unbanChat(message.split(" ")[1]);
 
             }
             JSONObject userdata = jObject.getJSONObject("message").getJSONObject("from");
