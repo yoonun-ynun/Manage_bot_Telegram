@@ -22,12 +22,15 @@ public class Action{
 
     int SendMessage(Long id, String text){
         try {
-            String Address = this.Address + "sendMessage" + "?chat_id=" + id + "&text=" + text;
+            String Address = this.Address + "sendMessage";
+            String data = "chat_id=" + id + "&text=" + text;
             URL url = new URL(Address);
-
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
-            con.setRequestMethod("GET");
-
+            con.setRequestMethod("POST");
+            con.setDoOutput(true);
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(con.getOutputStream()));
+            bw.write(data);
+            bw.flush();
             BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String line;
             StringBuilder sb = new StringBuilder();

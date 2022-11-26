@@ -147,7 +147,9 @@ public class Command {
         ArrayList<String> banned_list = banned.get(chat_id);
         banned_list.remove(text);
         banned.remove(chat_id);
-        banned.put(chat_id, banned_list);
+        if(!banned_list.isEmpty()) {
+            banned.put(chat_id, banned_list);
+        }
         ac.SendMessage(chat_id, "성공");
         Action.Write_banned();
     }
@@ -179,6 +181,7 @@ public class Command {
         }catch (NullPointerException e){
             ac.SendMessage(chat_id, "금지어가 없습니다.");
         }
+        System.out.println(sb.toString());
         ac.SendMessage(chat_id, sb.toString());
     }
 }
