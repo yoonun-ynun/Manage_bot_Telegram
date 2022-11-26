@@ -1,4 +1,5 @@
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.servlet.annotation.WebServlet;
@@ -33,31 +34,37 @@ public class Telegram extends HttpServlet {
             long key = jObject.getJSONObject("message").getLong("message_id");
             System.out.println(key);
             String message = jObject.getJSONObject("message").getString("text");
-            cmd.check_banned(message, key);
-            JSONArray jArray = jObject.getJSONObject("message").getJSONArray("entities");
-            JSONObject obj = jArray.getJSONObject(0);
-            String type = obj.getString("type");
+            try {
+                JSONArray jArray = jObject.getJSONObject("message").getJSONArray("entities");
+                JSONObject obj = jArray.getJSONObject(0);
+                String type = obj.getString("type");
+                if (type.equals("bot_command")) {
+                    String command = message.split(" ")[0];
+                    if (command.equals("/hitomi"))
+                        cmd.sendHitomi(message.split(" ")[1]);
 
-            if (type.equals("bot_command")) {
-                String command = message.split(" ")[0];
-                if(command.equals("/hitomi"))
-                    cmd.sendHitomi(message.split(" ")[1]);
-
-                if(command.equals("/mute"))
-                    cmd.mute(message.split(" ")[1]);
-                if(command.equals("/unmute"))
-                    cmd.unmute(message.split(" ")[1]);
-                if(command.equals("/getinfo")){
-                    cmd.getChat(message.split(" ")[1]);
+                    if (command.equals("/mute"))
+                        cmd.mute(message.split(" ")[1]);
+                    if (command.equals("/unmute"))
+                        cmd.unmute(message.split(" ")[1]);
+                    if (command.equals("/getinfo")) {
+                        cmd.getChat(message.split(" ")[1]);
+                    }
+                    if (command.equals("/gethitomi"))
+                        cmd.sendHitomiZip(message.split(" ")[1]);
+                    if (command.equals("/banchat")) {
+                        cmd.banChat(message.split(" ")[1]);
+                        return;
+                    }
+                    if (command.equals("/unbanchat"))
+                        cmd.unbanChat(message.split(" ")[1]);
+                    if(command.equals("/getbanchat"))
+                        cmd.banned_list();
                 }
-                if(command.equals("/gethitomi"))
-                    cmd.sendHitomiZip(message.split(" ")[1]);
-                if(command.equals("/banchat"))
-                    cmd.banChat(message.split(" ")[1]);
-                if(command.equals("/unbanchat"))
-                    cmd.unbanChat(message.split(" ")[1]);
-
+            }catch (JSONException e){
+                e.printStackTrace();
             }
+            cmd.check_banned(message, key);
             JSONObject userdata = jObject.getJSONObject("message").getJSONObject("from");
             cmd.Saveinfo(userdata);
 

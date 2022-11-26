@@ -146,6 +146,8 @@ public class Command {
         }
         ArrayList<String> banned_list = banned.get(chat_id);
         banned_list.remove(text);
+        banned.remove(chat_id);
+        banned.put(chat_id, banned_list);
         ac.SendMessage(chat_id, "성공");
         Action.Write_banned();
     }
@@ -162,5 +164,21 @@ public class Command {
         }catch (NullPointerException E){
             return;
         }
+    }
+    void banned_list(){
+        long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
+        ArrayList<String> ban_list = banned.get(chat_id);
+        Action ac = new Action();
+        StringBuilder sb = new StringBuilder();
+        sb.append("금지어 목록").append("\n");
+        sb.append("chat id: ").append(chat_id).append("\n");
+        try{
+            for(String banned_text:ban_list){
+                sb.append(banned_text).append("\n");
+            }
+        }catch (NullPointerException e){
+            ac.SendMessage(chat_id, "금지어가 없습니다.");
+        }
+        ac.SendMessage(chat_id, sb.toString());
     }
 }

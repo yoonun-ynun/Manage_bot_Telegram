@@ -133,7 +133,7 @@ public class Action{
 
     static void Write_banned(){
         try {
-            File save = new File(new Info().your_path, "banchat.txt");
+            File save = new File(new Info().path, "banchat.txt");
             BufferedWriter bw = null;
             try {
                 bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(save)));
@@ -161,7 +161,7 @@ public class Action{
         HashMap<Long, ArrayList<String>> result = new HashMap<>();
         try {
             ArrayList<String> banned = new ArrayList<>();
-            File read = new File(new Info().your_path, "banchat.txt");
+            File read = new File(new Info().path, "banchat.txt");
             boolean check = false;
             long id = 0L;
             BufferedReader br = null;
