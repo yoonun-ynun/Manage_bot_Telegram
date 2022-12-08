@@ -31,7 +31,16 @@ public class Telegram extends HttpServlet {
             System.out.println(sb);
             JSONObject jObject = new JSONObject(sb.toString());
             Command cmd = new Command(jObject);
-            long key = jObject.getJSONObject("message").getLong("message_id");
+            long key;
+            if(jObject.has("edited_message")){
+                System.out.println("check");
+                key = jObject.getJSONObject("edited_message").getLong("message_id");
+                String message = jObject.getJSONObject("edited_message").getString("text");
+                long chat_id = jObject.getJSONObject("edited_message").getJSONObject("chat").getLong("id");
+                cmd.check_banned(message, key, chat_id);
+            }
+            key = jObject.getJSONObject("message").getLong("message_id");
+            long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
             System.out.println(key);
             String message = jObject.getJSONObject("message").getString("text");
             try {
@@ -64,7 +73,7 @@ public class Telegram extends HttpServlet {
             }catch (JSONException e){
                 e.printStackTrace();
             }
-            cmd.check_banned(message, key);
+            cmd.check_banned(message, key, chat_id);
             JSONObject userdata = jObject.getJSONObject("message").getJSONObject("from");
             cmd.Saveinfo(userdata);
 

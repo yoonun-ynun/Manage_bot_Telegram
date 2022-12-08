@@ -153,8 +153,7 @@ public class Command {
         ac.SendMessage(chat_id, "성공");
         Action.Write_banned();
     }
-    void check_banned(String text, long message_id) throws Exception{
-        long chat_id = jObject.getJSONObject("message").getJSONObject("chat").getLong("id");
+    void check_banned(String text, long message_id, long chat_id) throws Exception{
         ArrayList<String> ban_list = banned.get(chat_id);
         Action ac = new Action();
         try {
