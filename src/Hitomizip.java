@@ -63,13 +63,17 @@ public class Hitomizip implements Runnable{
             }
             service.shutdown();
             int TIME_count = 0;
+            int private_count = 0;
             while (!service.awaitTermination(2, TimeUnit.SECONDS)){
                 if(TIME_count>300){
                     ac.Edittext(chat_id,message_id, "다운로드 실패 cause: 시간초과");
                     service.shutdownNow();
                     return;
                 }
-                ac.Edittext(chat_id, message_id, count[0] + "/" + length + "개 다운로드 완료");
+                if(private_count != count[0]){
+                    ac.Edittext(chat_id, message_id, count[0] + "/" + length + "개 다운로드 완료");
+                    private_count = count[0];
+                }
                 TIME_count++;
             }
 
